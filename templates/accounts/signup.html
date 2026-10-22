@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account | TaskFlow{% endblock %}
+
+{% block page_heading %}Create Account{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+            <div class="text-center mb-4">
+                <div class="avatar mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.25rem;">
+                    T
+                </div>
+                <h1 class="h3 mb-2">Create your TaskFlow account</h1>
+                <p class="text-muted mb-0">
+                    Join your workspace and start getting things done.
+                </p>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4 p-md-5">
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label">
+                                    {{ field.label }}
+                                </label>
+
+                                {{ field }}
+
+                                {% if field.help_text %}
+                                    <div class="form-text">
+                                        {{ field.help_text }}
+                                    </div>
+                                {% endif %}
+
+                                {% for error in field.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 mt-2">
+                            Create Account
+                        </button>
+                    </form>
+
+                </div>
+            </div>
+
+            <p class="text-center text-muted mt-4">
+                Already have an account?
+                <a href="{% url 'accounts:login' %}" class="fw-semibold">
+                    Log in
+                </a>
+            </p>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

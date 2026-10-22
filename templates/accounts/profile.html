@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile | TaskFlow{% endblock %}
+
+{% block page_heading %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-2">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">My Profile</h1>
+            <p class="text-muted mb-0">
+                Manage your personal information and account details.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'accounts:password-change' %}"
+            class="btn btn-outline-primary"
+        >
+            Change Password
+        </a>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-12 col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center p-4">
+
+                    <div
+                        class="avatar mx-auto mb-3"
+                        style="width: 80px; height: 80px; font-size: 2rem;"
+                    >
+                        {{ request.user.email|first|upper }}
+                    </div>
+
+                    <h4 class="mb-1">
+                        {{ request.user.first_name|default:request.user.email }}
+                    </h4>
+
+                    <p class="text-muted mb-3">
+                        {{ request.user.email }}
+                    </p>
+
+                    <span class="badge rounded-pill text-bg-primary">
+                        {{ request.user.get_role_display }}
+                    </span>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <h5 class="mb-4">Account Information</h5>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <div class="text-muted small mb-1">First Name</div>
+                            <div class="fw-semibold">
+                                {{ request.user.first_name|default:"Not provided" }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="text-muted small mb-1">Last Name</div>
+                            <div class="fw-semibold">
+                                {{ request.user.last_name|default:"Not provided" }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="text-muted small mb-1">Email</div>
+                            <div class="fw-semibold">
+                                {{ request.user.email }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="text-muted small mb-1">Role</div>
+                            <div class="fw-semibold">
+                                {{ request.user.get_role_display }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="text-muted small mb-1">Member Since</div>
+                            <div class="fw-semibold">
+                                {{ request.user.created_at|date:"M d, Y" }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="text-muted small mb-1">Last Updated</div>
+                            <div class="fw-semibold">
+                                {{ request.user.updated_at|date:"M d, Y" }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

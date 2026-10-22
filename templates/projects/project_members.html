@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Members | TaskFlow{% endblock %}
+
+{% block page_heading %}
+    Manage Members
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Manage Project Members</h1>
+            <p class="text-muted mb-0">
+                {{ project.name }}
+            </p>
+        </div>
+
+        <a
+            href="{% url 'projects:detail' project.pk %}"
+            class="btn btn-outline-secondary"
+        >
+            Back to Project
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Select Members
+                    </label>
+
+                    {{ form.members }}
+
+                    <div class="form-text">
+                        Only active users with the Member role can be added.
+                    </div>
+                </div>
+
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        {{ form.errors }}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary">
+                    Save Members
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

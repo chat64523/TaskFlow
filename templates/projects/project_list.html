@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Projects{% endblock %}
+{% block page_heading %}Projects{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+            <span class="text-uppercase small fw-semibold text-secondary">Workspace</span>
+            <h1 class="h3 fw-bold mb-1">Projects</h1>
+            <p class="text-secondary mb-0">
+                View and manage your TaskFlow projects.
+            </p>
+        </div>
+
+        <a href="{% url 'projects:create' %}" class="btn btn-primary">
+            + New Project
+        </a>
+    </div>
+
+    {% if projects %}
+    <div class="row g-4">
+        {% for project in projects %}
+        <div class="col-12 col-md-6 col-xl-4">
+
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body p-4">
+
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="rounded-3 bg-primary-subtle text-primary d-flex align-items-center justify-content-center"
+                             style="width: 44px; height: 44px;">
+                            ▦
+                        </div>
+
+                        <span class="badge text-bg-light">
+                            Project
+                        </span>
+                    </div>
+
+                    <h2 class="h5 fw-bold mb-2">
+                        {{ project.name }}
+                    </h2>
+
+                    <p class="text-secondary small mb-4">
+                        {{ project.description|default:"No description provided."|truncatewords:20 }}
+                    </p>
+
+                    <div class="small text-secondary mb-3">
+                        <div class="mb-2">
+                            <strong>Manager:</strong>
+                            {{ project.manager.email }}
+                        </div>
+
+                        <div>
+                            <strong>Created:</strong>
+                            {{ project.created_at|date:"M d, Y" }}
+                        </div>
+                    </div>
+
+                    <a href="{% url 'projects:detail' project.pk %}"
+                       class="btn btn-outline-primary w-100">
+                        View Project
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5 px-4">
+
+            <div class="display-5 mb-3">▦</div>
+
+            <h2 class="h4 fw-bold">No projects yet</h2>
+
+            <p class="text-secondary mb-4">
+                Create your first project to start organizing your team's work.
+            </p>
+
+            <a href="{% url 'projects:create' %}" class="btn btn-primary">
+                Create Project
+            </a>
+
+        </div>
+    </div>
+
+    {% endif %}
+
+</div>
+{% endblock %}

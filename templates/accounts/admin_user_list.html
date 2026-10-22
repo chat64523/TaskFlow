@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users | TaskFlow{% endblock %}
+
+{% block page_heading %}Manage Users{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-2">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Manage Users</h1>
+            <p class="text-muted mb-0">
+                Manage TaskFlow users and their roles.
+            </p>
+        </div>
+
+        <span class="badge rounded-pill text-bg-secondary">
+            {{ users|length }} user{{ users|length|pluralize }}
+        </span>
+    </div>
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead>
+                        <tr>
+                            <th class="px-4">User</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th class="text-end px-4">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for user in users %}
+                            <tr>
+
+                                <td class="px-4">
+                                    <div class="d-flex align-items-center gap-3">
+
+                                        <div class="avatar">
+                                            {{ user.email|first|upper }}
+                                        </div>
+
+                                        <div>
+                                            <div class="fw-semibold">
+                                                {{ user.first_name|default:user.email }}
+                                                {% if user.last_name %}
+                                                    {{ user.last_name }}
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="text-muted small">
+                                                Joined {{ user.created_at|date:"M d, Y" }}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    {{ user.email }}
+                                </td>
+
+                                <td>
+                                    <span class="badge rounded-pill text-bg-primary">
+                                        {{ user.get_role_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if user.is_active %}
+                                        <span class="badge rounded-pill text-bg-success">
+                                            Active
+                                        </span>
+                                    {% else %}
+                                        <span class="badge rounded-pill text-bg-secondary">
+                                            Inactive
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-end px-4">
+                                    <a
+                                        href="{% url 'accounts:admin-user-update' user.pk %}"
+                                        class="btn btn-sm btn-outline-primary"
+                                    >
+                                        Edit
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="fs-1 mb-2">👥</div>
+                                    <h6>No users found</h6>
+                                    <p class="text-muted mb-0">
+                                        There are no users to display.
+                                    </p>
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
