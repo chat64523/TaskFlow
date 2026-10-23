@@ -29,6 +29,12 @@ class Project(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["manager", "name"],
+                name="unique_project_name_per_manager",
+            )
+        ]
 
     def clean(self):
         super().clean()
