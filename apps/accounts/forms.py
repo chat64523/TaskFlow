@@ -36,6 +36,7 @@ class LoginForm(AuthenticationForm):
     )
 
 
+
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = User
@@ -44,6 +45,9 @@ class ProfileUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["email"].required = True
+
+    def clean_email(self):
+        return self.cleaned_data["email"].strip().lower()
 
 
 class AdminUserUpdateForm(forms.ModelForm):
