@@ -13,4 +13,9 @@ urlpatterns = [
         views.project_members_view,
         name="members",
     ),
+        path(
+            "<int:pk>/delete/",
+            views.project_delete_view,
+            name="delete",
+        ),
 ]
