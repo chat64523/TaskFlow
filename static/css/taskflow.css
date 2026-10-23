@@ -1,44 +1,81 @@
 :root {
     color-scheme: light;
-    --brand: #4568e8;
-    --brand-hover: #3454ce;
-    --app-bg: #f5f7fb;
+
+    /* Brand */
+    --brand: #7c3aed;
+    --brand-hover: #6d28d9;
+    --brand-soft: #eee9ff;
+
+    /* Application */
+    --app-bg: #f6f7fb;
     --surface: #ffffff;
-    --surface-muted: #f8faff;
-    --text-primary: #202b42;
-    --text-secondary: #7a8599;
-    --border: #e7ebf3;
+    --surface-muted: #faf9ff;
+
+    /* Text */
+    --text-primary: #202033;
+    --text-secondary: #7b7d91;
+
+    /* Borders */
+    --border: #e6e4ef;
+
+    /* Layout */
     --sidebar-width: 250px;
+    --topbar-height: 82px;
     --radius: 14px;
-    --shadow: 0 4px 18px rgba(31, 45, 75, 0.045);
+
+    /* Shadows */
+    --shadow: 0 4px 18px rgba(40, 35, 70, 0.05);
 }
 
 html[data-bs-theme="dark"] {
     color-scheme: dark;
-    --brand: #8098ff;
-    --brand-hover: #9aafff;
-    --app-bg: #111622;
-    --surface: #1a2130;
-    --surface-muted: #222b3d;
-    --text-primary: #edf1fb;
-    --text-secondary: #a3aec3;
-    --border: #30394b;
-    --shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+
+    --brand: #a78bfa;
+    --brand-hover: #c4b5fd;
+    --brand-soft: #302851;
+
+    --app-bg: #11121b;
+    --surface: #1a1b28;
+    --surface-muted: #232337;
+
+    --text-primary: #f1effa;
+    --text-secondary: #a8a6b9;
+
+    --border: #303043;
+
+    --shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
 }
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
 
 * {
     box-sizing: border-box;
 }
 
+html {
+    min-height: 100%;
+    scroll-padding-top: calc(var(--topbar-height) + 16px);
+}
+
 body {
+    min-height: 100vh;
     margin: 0;
+
     background: var(--app-bg);
     color: var(--text-primary);
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
         sans-serif;
+
     font-size: 14px;
     line-height: 1.6;
-    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 a {
@@ -50,18 +87,51 @@ a:hover {
     color: var(--brand-hover);
 }
 
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+
+/* =========================================================
+   APPLICATION LAYOUT
+   ========================================================= */
+
 .app-shell {
     min-height: 100vh;
 }
+
+.main-area {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    margin-left: 0;
+}
+
+/* Sidebar offset only when the sidebar actually exists */
+.main-area.has-sidebar {
+    margin-left: var(--sidebar-width);
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
 
 .sidebar {
     position: fixed;
     inset: 0 auto 0 0;
     z-index: 1040;
+
     display: flex;
-    flex-direction: column;
     width: var(--sidebar-width);
+    height: 100vh;
+    flex-direction: column;
+
     padding: 26px 18px 18px;
+
     background: var(--surface);
     border-right: 1px solid var(--border);
 }
@@ -70,9 +140,12 @@ a:hover {
     display: flex;
     align-items: center;
     gap: 11px;
+
     padding: 0 8px;
     margin-bottom: 38px;
+
     color: var(--text-primary);
+
     font-size: 21px;
     font-weight: 800;
     letter-spacing: -0.7px;
@@ -86,17 +159,23 @@ a:hover {
     display: grid;
     width: 38px;
     height: 38px;
+    flex: 0 0 auto;
     place-items: center;
+
     border-radius: 12px;
+
     background: var(--brand);
     color: #ffffff;
+
     font-size: 21px;
     font-weight: 800;
 }
 
 .sidebar-label {
     margin: 16px 10px 10px;
+
     color: var(--text-secondary);
+
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 1.3px;
@@ -110,14 +189,20 @@ a:hover {
 
 .nav-link-custom {
     display: flex;
+    min-height: 44px;
     align-items: center;
     gap: 12px;
-    min-height: 44px;
+
     padding: 10px 12px;
+
     border-radius: 10px;
+
     color: var(--text-secondary);
     font-weight: 600;
-    transition: background-color 0.15s ease, color 0.15s ease;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
 }
 
 .nav-link-custom:hover,
@@ -129,15 +214,21 @@ a:hover {
 .nav-symbol {
     display: inline-grid;
     width: 22px;
+    flex: 0 0 auto;
     place-items: center;
     font-size: 19px;
 }
 
 .sidebar-bottom {
-    margin-top: auto;
     padding-top: 18px;
+    margin-top: auto;
     border-top: 1px solid var(--border);
 }
+
+
+/* =========================================================
+   AVATAR / PROFILE
+   ========================================================= */
 
 .sidebar-user,
 .profile-link {
@@ -148,19 +239,17 @@ a:hover {
 
 .avatar {
     display: grid;
-    flex: 0 0 auto;
     width: 38px;
     height: 38px;
+    flex: 0 0 auto;
     place-items: center;
-    border-radius: 12px;
-    background: #e6ebff;
-    color: #3454ce;
-    font-weight: 800;
-}
 
-html[data-bs-theme="dark"] .avatar {
-    background: #303d65;
-    color: #c5d0ff;
+    border-radius: 12px;
+
+    background: var(--brand-soft);
+    color: var(--brand);
+
+    font-weight: 800;
 }
 
 .avatar-small {
@@ -178,8 +267,10 @@ html[data-bs-theme="dark"] .avatar {
 .user-info strong {
     overflow: hidden;
     max-width: 165px;
+
     color: var(--text-primary);
     font-size: 12px;
+
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -187,48 +278,6 @@ html[data-bs-theme="dark"] .avatar {
 .user-info span {
     color: var(--text-secondary);
     font-size: 11px;
-}
-
-.main-area {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    margin-left: var(--sidebar-width);
-}
-
-.topbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    display: flex;
-    min-height: 82px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 14px 34px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-}
-
-.topbar-left,
-.topbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-.topbar-eyebrow {
-    color: var(--text-secondary);
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 1.4px;
-}
-
-.topbar-title {
-    color: var(--text-primary);
-    font-size: 19px;
-    font-weight: 750;
-    letter-spacing: -0.4px;
 }
 
 .profile-link {
@@ -241,11 +290,66 @@ html[data-bs-theme="dark"] .avatar {
 }
 
 .profile-email {
-    max-width: 190px;
     overflow: hidden;
+    max-width: 190px;
+
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    min-height: var(--topbar-height);
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 14px 34px;
+
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar-left,
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.topbar-eyebrow {
+    display: block;
+    margin-bottom: 2px;
+
+    color: var(--text-secondary);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+}
+
+.topbar-title {
+    color: var(--text-primary);
+
+    font-size: 19px;
+    font-weight: 750;
+    line-height: 1.25;
+    letter-spacing: -0.4px;
+}
+
+
+/* =========================================================
+   ICON BUTTONS
+   ========================================================= */
 
 .icon-button {
     display: inline-grid;
@@ -253,43 +357,49 @@ html[data-bs-theme="dark"] .avatar {
     height: 38px;
     flex: 0 0 auto;
     place-items: center;
+
     border: 1px solid var(--border);
     border-radius: 11px;
+
     background: var(--surface);
     color: var(--text-primary);
+
     cursor: pointer;
     font-size: 17px;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .icon-button:hover {
     background: var(--surface-muted);
+    border-color: var(--brand);
 }
 
 .mobile-menu-button {
     display: none;
 }
 
+
+/* =========================================================
+   PAGE CONTENT
+   ========================================================= */
+
 .page-content {
     width: 100%;
     max-width: 1500px;
-    flex: 1;
+    flex: 1 0 auto;
+
     padding: 32px 34px;
     margin: 0 auto;
 }
 
-.app-footer {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 18px 34px;
-    border-top: 1px solid var(--border);
-    color: var(--text-secondary);
-    font-size: 11px;
-}
-
 .page-title {
     margin: 0 0 6px;
+
     color: var(--text-primary);
+
     font-size: clamp(23px, 3vw, 30px);
     font-weight: 800;
     letter-spacing: -0.8px;
@@ -306,14 +416,22 @@ html[data-bs-theme="dark"] .avatar {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 16px;
+
     margin-bottom: 25px;
 }
+
+
+/* =========================================================
+   PANELS / CARDS
+   ========================================================= */
 
 .panel,
 .stat-card {
     padding: 22px;
+
     border: 1px solid var(--border);
     border-radius: var(--radius);
+
     background: var(--surface);
     box-shadow: var(--shadow);
 }
@@ -330,7 +448,9 @@ html[data-bs-theme="dark"] .avatar {
 
 .stat-value {
     margin-top: 8px;
+
     color: var(--text-primary);
+
     font-size: 29px;
     font-weight: 800;
     letter-spacing: -1px;
@@ -341,17 +461,29 @@ html[data-bs-theme="dark"] .avatar {
     width: 42px;
     height: 42px;
     place-items: center;
+
     border-radius: 12px;
+
     background: var(--surface-muted);
     color: var(--brand);
+
     font-size: 20px;
 }
 
+
+/* =========================================================
+   SHARED FORMS
+   ========================================================= */
+
 .form-control,
 .form-select {
+    display: block;
+    width: 100%;
     min-height: 43px;
+
     border-color: var(--border);
     border-radius: 9px;
+
     background-color: var(--surface);
     color: var(--text-primary);
 }
@@ -359,13 +491,18 @@ html[data-bs-theme="dark"] .avatar {
 .form-control:focus,
 .form-select:focus {
     border-color: var(--brand);
-    box-shadow: 0 0 0 3px rgba(69, 104, 232, 0.12);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
 }
 
 .form-label {
     color: var(--text-primary);
     font-weight: 650;
 }
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 
 .btn {
     border-radius: 9px;
@@ -383,18 +520,34 @@ html[data-bs-theme="dark"] .avatar {
     --bs-btn-active-border-color: var(--brand-hover);
 }
 
+html[data-bs-theme="dark"] .btn-outline-secondary {
+    --bs-btn-color: var(--text-primary);
+    --bs-btn-border-color: var(--border);
+    --bs-btn-hover-bg: var(--surface-muted);
+    --bs-btn-hover-color: var(--text-primary);
+    --bs-btn-hover-border-color: var(--border);
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
 .table {
     --bs-table-bg: var(--surface);
     --bs-table-color: var(--text-primary);
     --bs-table-border-color: var(--border);
+
     vertical-align: middle;
 }
 
 .table thead th {
     padding-top: 13px;
     padding-bottom: 13px;
+
     background: var(--surface-muted);
     color: var(--text-secondary);
+
     font-size: 11px;
     font-weight: 750;
     letter-spacing: 0.5px;
@@ -406,12 +559,20 @@ html[data-bs-theme="dark"] .avatar {
     padding-bottom: 15px;
 }
 
+
+/* =========================================================
+   BADGES / ALERTS
+   ========================================================= */
+
 .badge-status {
     display: inline-block;
     padding: 5px 9px;
+
     border-radius: 7px;
+
     background: var(--surface-muted);
     color: var(--text-secondary);
+
     font-size: 11px;
     font-weight: 750;
 }
@@ -424,15 +585,31 @@ html[data-bs-theme="dark"] .alert {
     border-color: var(--border);
 }
 
-html[data-bs-theme="dark"] .btn-outline-secondary {
-    --bs-btn-color: var(--text-primary);
-    --bs-btn-border-color: var(--border);
-    --bs-btn-hover-bg: var(--surface-muted);
-    --bs-btn-hover-color: var(--text-primary);
-    --bs-btn-hover-border-color: var(--border);
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.app-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 18px 34px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--text-secondary);
+    font-size: 11px;
 }
 
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
 @media (max-width: 900px) {
+
     .sidebar {
         transform: translateX(-100%);
         transition: transform 0.2s ease;
@@ -443,7 +620,8 @@ html[data-bs-theme="dark"] .btn-outline-secondary {
         box-shadow: 15px 0 40px rgba(0, 0, 0, 0.12);
     }
 
-    .main-area {
+    .main-area,
+    .main-area.has-sidebar {
         margin-left: 0;
     }
 
@@ -464,7 +642,9 @@ html[data-bs-theme="dark"] .btn-outline-secondary {
     }
 }
 
+
 @media (max-width: 560px) {
+
     .topbar {
         align-items: flex-start;
     }
@@ -496,11 +676,18 @@ html[data-bs-theme="dark"] .btn-outline-secondary {
     }
 }
 
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
         scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
     }
 }

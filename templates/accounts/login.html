@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login | TaskFlow{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block main_area_class %}auth-main{% endblock %}
+
+{% block page_heading %}Login{% endblock %}
+
+{% block topbar_auth_link %}{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+
+        <div class="auth-header">
+            <div class="auth-logo">T</div>
+
+            <h1 class="auth-title">Welcome back</h1>
+
+            <p class="auth-subtitle">
+                Sign in to continue to TaskFlow
+            </p>
+        </div>
+
+        <div class="auth-card">
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger auth-alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form method="post" class="auth-form">
+                {% csrf_token %}
+
+                <div class="auth-field">
+                    <label for="{{ form.username.id_for_label }}" class="auth-label">
+                        Email
+                    </label>
+
+                    {{ form.username }}
+
+                    {% if form.username.errors %}
+                        <div class="auth-error">
+                            {{ form.username.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="auth-field">
+                    <label for="{{ form.password.id_for_label }}" class="auth-label">
+                        Password
+                    </label>
+
+                    {{ form.password }}
+
+                    {% if form.password.errors %}
+                        <div class="auth-error">
+                            {{ form.password.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="auth-button">
+                    Log in
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account?
+                <a href="{% url 'accounts:signup' %}">
+                    Sign up
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

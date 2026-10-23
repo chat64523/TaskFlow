@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile | TaskFlow{% endblock %}
+
+{% block page_heading %}
+    My Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="row g-4">
+
+        <!-- Profile Summary -->
+        <div class="col-lg-4">
+
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+
+                    <!-- Avatar -->
+                    <div
+                        class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
+                        style="width: 90px; height: 90px; font-size: 32px;"
+                    >
+                        {{ request.user.email|first|upper }}
+                    </div>
+
+                    <h4 class="mb-1">
+                        {% if request.user.first_name or request.user.last_name %}
+                            {{ request.user.first_name }}
+                            {{ request.user.last_name }}
+                        {% else %}
+                            {{ request.user.email }}
+                        {% endif %}
+                    </h4>
+
+                    <p class="text-muted mb-3">
+                        {{ request.user.email }}
+                    </p>
+
+                    <!-- Role -->
+                    {% if request.user.role == "ADMIN" %}
+                        <span class="badge text-bg-danger">
+                            Administrator
+                        </span>
+                    {% elif request.user.role == "MANAGER" %}
+                        <span class="badge text-bg-primary">
+                            Manager
+                        </span>
+                    {% else %}
+                        <span class="badge text-bg-secondary">
+                            Member
+                        </span>
+                    {% endif %}
+
+                    <!-- Account Status -->
+                    <div class="mt-4 pt-3 border-top">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Account status</span>
+
+                            {% if request.user.is_active %}
+                                <span class="text-success fw-semibold">
+                                    Active
+                                </span>
+                            {% else %}
+                                <span class="text-danger fw-semibold">
+                                    Inactive
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Member since</span>
+                            <span>
+                                {{ request.user.date_joined|date:"M d, Y" }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Edit Profile -->
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-1">
+                        Profile Information
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+                        Update your personal information and email address.
+                    </p>
+                </div>
+
+                <div class="card-body">
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show">
+                                {{ message }}
+
+                                <button
+                                    type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"
+                                ></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label
+                                    for="{{ form.first_name.id_for_label }}"
+                                    class="form-label"
+                                >
+                                    First Name
+                                </label>
+
+                                {{ form.first_name }}
+
+                                {% for error in form.first_name.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <label
+                                    for="{{ form.last_name.id_for_label }}"
+                                    class="form-label"
+                                >
+                                    Last Name
+                                </label>
+
+                                {{ form.last_name }}
+
+                                {% for error in form.last_name.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+
+                            <div class="col-12">
+                                <label
+                                    for="{{ form.email.id_for_label }}"
+                                    class="form-label"
+                                >
+                                    Email Address
+                                </label>
+
+                                {{ form.email }}
+
+                                {% for error in form.email.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+
+                            <a
+                                href="{% url 'accounts:password-change' %}"
+                                class="btn btn-outline-secondary"
+                            >
+                                Change Password
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+
+            <!-- Account Details -->
+            <div class="card shadow-sm mt-4">
+
+                <div class="card-header bg-transparent">
+                    <h5 class="mb-0">
+                        Account Details
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <span class="text-muted small d-block">
+                                Role
+                            </span>
+
+                            <strong>
+                                {{ request.user.get_role_display }}
+                            </strong>
+                        </div>
+
+                        <div class="col-md-6">
+                            <span class="text-muted small d-block">
+                                Last Login
+                            </span>
+
+                            <strong>
+                                {% if request.user.last_login %}
+                                    {{ request.user.last_login|date:"M d, Y H:i" }}
+                                {% else %}
+                                    Never
+                                {% endif %}
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Navigation -->
+    <div class="mt-4">
+
+        <a
+            href="{% url 'core:dashboard' %}"
+            class="btn btn-outline-secondary"
+        >
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

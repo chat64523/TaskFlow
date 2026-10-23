@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} | TaskFlow{% endblock %}
+
+{% block page_heading %}
+    Project Details
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Project Header -->
+    <div class="d-flex justify-content-between align-items-start mb-4">
+
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="badge text-bg-primary">Project</span>
+            </div>
+
+            <h1 class="h2 mb-2">{{ project.name }}</h1>
+
+            <p class="text-muted mb-0">
+                {{ project.description|default:"No description provided." }}
+            </p>
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a
+                href="{% url 'tasks:list' project_id=project.pk %}"
+                class="btn btn-outline-primary"
+            >
+                View Tasks
+            </a>
+
+            {% if request.user.is_superuser or request.user.role == "ADMIN" or project.manager_id == request.user.id %}
+
+                <a
+                    href="{% url 'projects:update' project.pk %}"
+                    class="btn btn-outline-primary"
+                >
+                    Edit Project
+                </a>
+
+                <a
+                    href="{% url 'projects:members' project.pk %}"
+                    class="btn btn-primary"
+                >
+                    Manage Members
+                </a>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+
+    <!-- Project Information -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+
+                    <p class="text-muted small mb-2">
+                        PROJECT MANAGER
+                    </p>
+
+                    <h5 class="mb-1">
+                        {{ project.manager.first_name|default:project.manager.email }}
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        {{ project.manager.email }}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+
+                    <p class="text-muted small mb-2">
+                        CREATED
+                    </p>
+
+                    <h5 class="mb-1">
+                        {{ project.created_at|date:"M d, Y" }}
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        {{ project.created_at|date:"H:i" }}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+
+                    <p class="text-muted small mb-2">
+                        LAST UPDATED
+                    </p>
+
+                    <h5 class="mb-1">
+                        {{ project.updated_at|date:"M d, Y" }}
+                    </h5>
+
+                    <p class="text-muted mb-0">
+                        {{ project.updated_at|date:"H:i" }}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Members -->
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-transparent">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+                    <h5 class="mb-1">
+                        Project Members
+                    </h5>
+
+                    <p class="text-muted small mb-0">
+                        Members currently assigned to this project
+                    </p>
+                </div>
+
+                <span class="badge text-bg-secondary">
+                    {{ project.memberships.count }} member{{ project.memberships.count|pluralize }}
+                </span>
+
+            </div>
+        </div>
+
+
+        <div class="card-body p-0">
+
+            {% for membership in project.memberships.all %}
+
+                <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div class="avatar">
+                            {{ membership.user.email|first|upper }}
+                        </div>
+
+                        <div>
+                            <strong>
+                                {{ membership.user.first_name|default:membership.user.email }}
+                            </strong>
+
+                            <div class="text-muted small">
+                                {{ membership.user.email }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="badge text-bg-light">
+                        Member
+                    </span>
+
+                </div>
+
+            {% empty %}
+
+                <div class="text-center py-5">
+
+                    <div class="mb-3 fs-1">
+                        👥
+                    </div>
+
+                    <h6>No members yet</h6>
+
+                    <p class="text-muted mb-3">
+                        Add members to start working on this project.
+                    </p>
+
+                    {% if request.user.is_superuser or request.user.role == "ADMIN" or project.manager_id == request.user.id %}
+
+                        <a
+                            href="{% url 'projects:members' project.pk %}"
+                            class="btn btn-primary btn-sm"
+                        >
+                            Add Members
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+    <!-- Navigation -->
+    <div class="mt-4 d-flex gap-2">
+
+        <a
+            href="{% url 'projects:list' %}"
+            class="btn btn-outline-secondary"
+        >
+            ← Back to Projects
+        </a>
+
+        <a
+            href="{% url 'core:dashboard' %}"
+            class="btn btn-outline-secondary"
+        >
+            Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
